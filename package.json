@@ -4,6 +4,7 @@
   "description": "Authentication module in the HFramework",
   "main": "build/index.js",
   "scripts": {
+    "build": "babel ./src -d ./lib",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +21,9 @@
   "bugs": {
     "url": "https://github.com/naml3i/hauth-dev/issues"
   },
-  "homepage": "https://github.com/naml3i/hauth-dev#readme"
+  "homepage": "https://github.com/naml3i/hauth-dev#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
 }
