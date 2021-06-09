@@ -118,7 +118,7 @@ module.exports = async function(config, db) {
     rule = rule || getRule(url);
     if (!rule || rule === 'deny') {
       return false;
-    } else if (rule === 'allow') {
+    } else if (rule === 'allow' || rule === 'skip') {
       return true;
     } else if (Array.isArray(rule)) {
       return rule.includes(role) ? true : false;
