@@ -1,5 +1,5 @@
 {
-  "name": "@horanet/hauth-dev",
+  "name": "@horanet/hauth",
   "version": "0.0.4",
   "description": "Authentication module in the HFramework",
   "main": "build/index.js",
@@ -18,19 +18,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/naml3i/hauth-dev.git"
+    "url": "https://gitlab.horanet.com/hframework/hauth.git"
   },
   "keywords": [
     "npm",
     "node",
-    "javascript"
+    "javascript",
+    "authentication"
   ],
   "author": "Nam",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/naml3i/hauth-dev/issues"
+    "url": "https://gitlab.horanet.com/hframework/hauth/-/issues"
   },
-  "homepage": "https://github.com/naml3i/hauth-dev#readme",
+  "homepage": "https://gitlab.horanet.com/hframework/hauth/-/blob/master/README.md",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
