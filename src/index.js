@@ -15,6 +15,7 @@ module.exports = async function(config, db) {
   await checkTableHroles();
   await fillTableHroles(cfg.hroles);
   await checkTableHusers();
+  // await fillTableHusers(cfg.husers);
 
   /**
    * checks if a table exists in database
@@ -44,7 +45,7 @@ module.exports = async function(config, db) {
   }
 
   /**
-   * checks if table 'husers' exists in database, or create it
+   * checks and create if table 'husers' does not exist in database
    */
   async function checkTableHusers() {
     if (await missing('husers')) {
@@ -75,6 +76,22 @@ module.exports = async function(config, db) {
       var i=1;
       const dollars = newRoles.map((x) => `($${i++})`).join(',');
       await db.query(`INSERT INTO hroles (name) VALUES ${dollars} ON CONFLICT DO NOTHING`, newRoles);
+    }
+  }
+
+  /**
+   * Create default accounts in table husers as defined in hauth.conf
+   */
+   async function fillTableHusers(husers) {
+    const users = await db.query(`SELECT name FROM hroles`);
+    newUsers = husers.filter( (newRole) => !users.rows.map((x) => x.name).includes(newRole) );
+    if (newUsers.length) {
+      var i=1;
+      const dollars = newUsers.map((x) => `($${i++})`).join(',');
+      // `INSERT INTO husers (login, next_password, hrole_id)
+      // VALUES ('admin','admin',(SELECT id FROM hroles WHERE name='admin'))
+      // ON CONFLICT DO NOTHING`
+      await db.query(`INSERT INTO husers (login, next_password, name, hrole_id) VALUES ${dollars} ON CONFLICT DO NOTHING`, newUsers);
     }
   }
 
