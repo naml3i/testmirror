@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://gitlab.horanet.com/hframework/hauth/compare/v0.0.4...v0.0.5) (2021-06-11)
+
 ### [0.0.4](https://github.com/naml3i/hauth-dev/compare/v0.0.3...v0.0.4) (2021-06-02)
 
 ### 0.0.2 (2021-06-01)
