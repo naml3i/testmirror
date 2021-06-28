@@ -32,10 +32,6 @@
     "url": "https://gitlab.horanet.com/hframework/hauth/-/issues"
   },
   "homepage": "https://gitlab.horanet.com/hframework/hauth/-/blob/master/README.md",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "jsonwebtoken": "^8.5.1"
-  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
@@ -52,6 +48,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "jsonwebtoken": "^8.5.1",
     "express": "^4.17.1",
     "pg": "^8.6.0"
   }
