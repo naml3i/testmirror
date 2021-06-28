@@ -1,0 +1,82 @@
+import * as assert from 'assert';
+
+const express = require('express');
+const chai = require('chai');
+const request = require('supertest');
+
+// const testSamples = [
+//   { input: null, expectedResult: null, description: 'should return null when null is passed' },
+//   { input: undefined, expectedResult: null, description: 'should return null when undefined is passed' },
+//   { input: 'abc', expectedResult: 'abc', description: 'should return pristine value when receiving "abc"' },
+//   { input: 'abc1234567', expectedResult: 'abc1234567', description: 'should return pristine value when receiving "abc1234567"' },
+//   { input: 'abcdefghij', expectedResult: 'abcdefghij', description: 'should return pristine value when receiving "abcdefghij"' },
+//   { input: '1234567890', expectedResult: '(123) 456-7890', description: 'should return (123) 456-7890' },
+//   { input: '5431260987', expectedResult: '(543) 126-0987', description: 'should return (543) 126-0987' },
+// ];
+
+const express = require('express');
+const app = express();
+
+const hauth = await require('@horanet/hauth')({
+  hroles: ['role1', 'role2'], // rôles à créer au démarrage
+  husers: [  // comptes à créer au démarrage
+    {login: 'jdoe', name: 'John Doe', role: 'role1', password: 'password'}
+    {login: 'rroe', name: 'Richard Roe', role: 'role2', password: 'password'}
+    {login: 'jbaker', name: 'Jane Baker', password: 'password'} // aucun rôle
+  ],
+  accessRules: {
+    '/skip' : 'skip',
+
+    '/allow/deny1' : 'deny',
+    '/allow' : 'allow',
+    '/allow/deny2' : 'deny', // ne doit pas être pris en compte car la règle '/allow' apparaît avant
+
+    '/deny/allow1' : 'allow',
+    '/deny' : 'deny',
+    '/deny/allow2' : 'allow', // ne doit pas être pris en compte car la règle '/deny' apparaît avant
+
+    '/all_roles': ['role1', 'role2'],
+    '/only_role1': ['role1'],
+    '/no_role': [], // équivaut à 'deny'
+  },
+  autocreate: async function(login, pwd, db) {
+    if (pwd === 'magic') {
+      return {login: login, name: login, hrole: 'role1'}
+    }
+  }
+}, db)
+
+app.use('/hauth/login', hauth.getCookie);
+app.use('/hauth/logout', hauth.delCookie);
+app.use('/', hauth.control);
+
+app.use('/', (req, res) => {res.send()}) // pour retourner HTTP/1.1 200 OK
+
+app.runMiddleware('/allow', {}, function(code, body,headers) {
+  // on vérifie que code == 401
+})
+
+app.runMiddleware('/skip', {}, function(code, body,headers) {
+  // on vérifie que code == 200
+})
+
+app.runMiddleware('/allow', {
+  headers: {'Authorization': 'Basic amRvZTpwYXNzd29yZA=='} // credentials de John Doe
+}, function(code, body,headers) {
+  // on vérifie que code == 200
+})
+
+app.runMiddleware('/deny', {
+  headers: {'Authorization': 'Basic amRvZTpwYXNzd29yZA=='}
+}, function(code, body,headers) {
+  // on vérifie que code == 403
+})
+
+
+describe('Array', () => {
+  testSamples.forEach((sample) => {
+    it(sample.description, () => {
+      assert.equal(maskUSPhone(sample.input), sample.expectedResult);
+    });
+  });
+});

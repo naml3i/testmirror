@@ -7,8 +7,8 @@
     "build": "npm babel ./src -d ./lib",
     "lint": "eslint ./src",
     "test": "nyc mocha --require babel-core/register",
-    "release": "standard-version",
-    "prepublishOnly": "npm run build"
+    "test2": "nyc mocha",
+    "release": "standard-version"
   },
   "nyc": {
     "reporter": [
@@ -26,7 +26,7 @@
     "javascript",
     "authentication"
   ],
-  "author": "Nam",
+  "author": "HSO",
   "license": "MIT",
   "bugs": {
     "url": "https://gitlab.horanet.com/hframework/hauth/-/issues"
@@ -35,10 +35,14 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "chai": "^4.3.4",
+    "dotenv": "^10.0.0",
     "eslint": "^7.27.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
+    "jest": "^27.0.4",
     "mocha": "^8.4.0",
+    "mongoose": "^5.12.13",
     "nyc": "^15.1.0",
     "standard-version": "^9.3.0"
   }
