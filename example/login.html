@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="shortcut icon" type="image/png" href="/static/sesame/images/sesame-32.png"/>
+        <link rel="stylesheet" media="all" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <style>
+body {
+text-align: center;
+margin: 100px auto;
+font-weight: bold;
+}
+#message, body input {
+display: block;
+width: 200px;
+margin: 10px auto;
+}
+#message {
+display: none;
+border: 2px solid #F44;
+border-radius: 4px;
+background-color: #FDD;
+}
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <div>Veuillez vous authentifier</div>
+            <div id="message"></div>
+            <input type="text" id="login" placeholder="Identifiant"/>
+            <input type="password" id="password" placeholder="Mot de passe"/>
+            <input type="submit" value="Connexion" onclick="login()"/>
+        </div>
+        <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript">
+function login() {
+    $.ajax('/hauth/login', {
+        method: 'post',
+        data: {
+            login: $('#login').val(),
+            password: $('#password').val(),
+        },
+        success: function(data) {
+            document.location.reload(true);
+        },
+        error: function(xhr, status, error) {
+            $('#message').text('Error: ' + xhr.responseText).show()
+        }
+    });
+}
+        </script>
+    </body>
+</html>

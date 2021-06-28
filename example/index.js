@@ -30,6 +30,9 @@ const hauthParams = {
     '/deny': 'deny',
     '/reserved': ['role1']
   },
+  errorPage: {
+    login: __dirname + 'login.html'
+  }
 };
 
 /* TODO: remplacer './lib/index.js' par '@horanet/hauth' */
