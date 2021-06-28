@@ -1,6 +1,6 @@
 .idea/
 .vscode/
-lib/
+package-lock.json
 
 # Logs
 logs

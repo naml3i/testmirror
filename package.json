@@ -1,8 +1,8 @@
 {
   "name": "@horanet/hauth",
   "version": "0.0.5",
-  "description": "Authentication module in the HFramework",
-  "main": "build/index.js",
+  "description": "Authentication module for web apps with PG database",
+  "main": "lib/index.js",
   "scripts": {
     "build": "npm babel ./src -d ./lib",
     "lint": "eslint ./src",
@@ -21,17 +21,21 @@
     "url": "https://gitlab.horanet.com/hframework/hauth.git"
   },
   "keywords": [
-    "npm",
-    "node",
-    "javascript",
-    "authentication"
+    "authentication",
+    "authorization",
+    "accounting",
+    "AAA"
   ],
-  "author": "HSO",
+  "author": "Horanet",
   "license": "MIT",
   "bugs": {
     "url": "https://gitlab.horanet.com/hframework/hauth/-/issues"
   },
   "homepage": "https://gitlab.horanet.com/hframework/hauth/-/blob/master/README.md",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "jsonwebtoken": "^8.5.1"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
@@ -45,5 +49,10 @@
     "mongoose": "^5.12.13",
     "nyc": "^15.1.0",
     "standard-version": "^9.3.0"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.1",
+    "pg": "^8.6.0"
   }
 }
