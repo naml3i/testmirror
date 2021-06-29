@@ -17,7 +17,12 @@ const db = new pg.Pool({
 const hauthParams = {
   // Refer to the README file for the description of the params
   //cookiename: 'hauth', // optional, default value is 'hauth'
-  roles: ['admin', 'installer', 'terminal'],
+  hroles: ['admin', 'user', 'installer', 'terminal'],
+  husers: [
+    {"login": "admin", "name": "Administrator", "role": "admin", "next_password": "admin"},
+    {"login": "vcount", "name": "Camera", "role": "terminal", "next_password": "secret"},
+    {'login': 'conmeo', 'name': 'Installer', 'role': 'installer', 'next_password': 'conmeo'}
+  ],
   accessRules: {
     '/skip': 'skip',
     '/allow': 'allow',
@@ -25,19 +30,34 @@ const hauthParams = {
     '/reserved': ['admin']
   },
   errorPage: {
-    login: __dirname + 'login.html'
+    login: __dirname + '/static/login.html',
+    forbidden: __dirname + '/static/forbidden.html'
   }
 };
 
 /* TODO: remplacer './lib/index.js' par '@horanet/hauth' */
-const hauth = require('../lib/index.js')(hauthParams, db);
+const hauth = await require('../lib/index.js')(hauthParams, db);
+
+// Home page
+app.use('/$', function(req, res) {res.redirect('/hadmin')});
+
+/* function hauth.getCookie. */
+app.use('/hauth/login', hauth.getCookie);
+
+/* function hauth.delCookie. */
+app.use('/hauth/logout', hauth.delCookie);
+
+/* function hauth.control */
+app.use('/', hauth.control);
 
 app.get('/', (req, res) => {
-  res.send('Welcome to the hauth authentication page!')
+  // res.send('Welcome to the hauth authentication page!')
+  
+  res.sendFile(hauthParams.errorPage.login)
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example server listening at http://localhost:${port}`)
 })
 }
 
