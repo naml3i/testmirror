@@ -4,6 +4,7 @@
   "description": "Authentication module for web apps with PG database",
   "main": "lib/index.js",
   "scripts": {
+    "example": "nodemon ./example/index.js",
     "build": "npm babel ./src -d ./lib",
     "lint": "eslint ./src",
     "test": "nyc mocha --require babel-core/register",
