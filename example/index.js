@@ -9,6 +9,10 @@ const port = 3000;
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Static content.
+global.STATIC_DIR = path.join(__dirname, "static");
+app.use('/static', express.static(STATIC_DIR))
+    .use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
 const pg = require('pg');
 const db = new pg.Pool({
     host: 'localhost',
@@ -21,7 +25,7 @@ const db = new pg.Pool({
 const hauthParams = {
   // Refer to the README file for the description of the params
   //cookiename: 'hauth', // optional, default value is 'hauth'
-  hroles: ['admin', 'user', 'installer', 'terminal'],
+  roles: ['admin', 'user', 'installer', 'terminal'],
   husers: [
     {"login": "admin", "name": "Administrator", "role": "admin", "next_password": "admin"},
     {"login": "vcount", "name": "Camera", "role": "terminal", "next_password": "secret"},
