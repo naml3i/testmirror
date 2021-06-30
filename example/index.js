@@ -1,8 +1,13 @@
 async function init(){
 
 const express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+
 const app = express();
 const port = 3000;
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 const pg = require('pg');
 const db = new pg.Pool({
@@ -38,25 +43,32 @@ const hauthParams = {
 const hauth = await require('../lib/index.js')(hauthParams, db);
 
 // Home page
-app.use('/$', function(req, res) {res.redirect('/hadmin')});
+// app.use('/$', function(req, res) {res.redirect('/hadmin')});
 
-/* function hauth.getCookie. */
+/* functions related to cookie */
 app.use('/hauth/login', hauth.getCookie);
 
-/* function hauth.delCookie. */
 app.use('/hauth/logout', hauth.delCookie);
+
+/* function related to managing users */
+// TODO: rewrite function checkUser or create a new function?
+app.use('/hauth/add', hauth.addUser);
+
+app.use('/hauth/del', hauth.delUser);
+
+app.use('/hauth/mod', hauth.modUser);
+
 
 /* function hauth.control */
 app.use('/', hauth.control);
 
 app.get('/', (req, res) => {
   // res.send('Welcome to the hauth authentication page!')
-  
   res.sendFile(hauthParams.errorPage.login)
 })
 
 app.listen(port, () => {
-  console.log(`Example server listening at http://localhost:${port}`)
+  console.log(`Example server running at http://localhost:${port}`)
 })
 }
 
