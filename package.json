@@ -54,6 +54,7 @@
     "express": "^4.17.1",
     "jquery": "^3.6.0",
     "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.8",
     "pg": "^8.6.0"
   }
 }
