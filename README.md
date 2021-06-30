@@ -24,7 +24,7 @@ for example by using `psql`:
 sudo -u postgres psql
 postgres=# CREATE DATABASE test;
 postgres=# CREATE USER testuser WITH ENCRYPTED PASSWORD 'testpass';
-postgres=# GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+postgres=# GRANT ALL PRIVILEGES ON DATABASE mydb TO testuser;
 ```
 
 With the correct params to connect to the created PG database, the module will automatically creates two tables (if they do not exist): `hauth_user` and `hauth_role`.
@@ -80,6 +80,12 @@ Sign and verify token using JSON Web Token
 
 Delete cookie when the current user logs out.
 
+### addUser
+
+### delUser
+
+### modUser
+
 ### getUserAndPwdFromDb
 
 Extract the login:password, either in the `Body`, or in the `Header` of the HTTP request 'Authorization: Basic xxx'
@@ -97,4 +103,3 @@ npm run example
 ## Test
 
 ## FAQ
-
