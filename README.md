@@ -82,10 +82,14 @@ Delete cookie when the current user logs out.
 
 ### addUser
 
+Add a single user to table `hauth_user`
+
 ### delUser
 
+Delete a user from table `hauth_user`
 ### modUser
 
+Modify an existing user ()
 ### getUserAndPwdFromDb
 
 Extract the login:password, either in the `Body`, or in the `Header` of the HTTP request 'Authorization: Basic xxx'
@@ -99,6 +103,8 @@ npm install
 
 npm run example
 ```
+
+To check the currently logged in user, use the path `localhost:3000/whoami`
 
 ## Test
 
