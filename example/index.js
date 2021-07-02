@@ -41,6 +41,7 @@ const hauthParams = {
     '/skip': 'skip',
     '/allow': 'allow',
     '/deny': 'deny',
+    '/whoami': 'allow',
     '/reserved': ['admin']
   },
   errorPage: {
@@ -77,6 +78,8 @@ app.use('/', function (req, res, next) {
   // res.send('Welcome to the hauth authentication page!')
   // res.sendFile(hauthParams.errorPage.login)
 })
+
+app.use('/whoami', (req, res) => {res.send(req.user)});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
