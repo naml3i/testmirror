@@ -1,5 +1,3 @@
-async function init(){
-
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -22,7 +20,7 @@ const db = new pg.Pool({
     password: 'testpass',
 });
 
-const hauthParams = {
+const config = {
   // Refer to the README file for the description of the params
   //cookiename: 'hauth', // optional, default value is 'hauth'
   roles: ['admin', 'user'],
@@ -39,10 +37,13 @@ const hauthParams = {
 };
 
 /* TODO: remplacer './lib/index.js' par '@horanet/hauth' */
-const hauth = await require('../lib/index.js')(hauthParams, db);
+const hauth = require('../lib/index.js');
 
-hauth.addUser({login: 'admin', role: 'admin', password: 'admin'});
-hauth.addUser({login: 'user', password: 'password'}); // no role is defined
+/* init Hauth with config params and database handle */
+hauth.init(config, db).then(() => {
+  hauth.addUser({login: 'admin', role: 'admin', password: 'admin'});
+  hauth.addUser({login: 'user', password: 'password'}); // no role is defined
+});
 
 /* functions related to cookie, that should not be submitted to access control
  * => either run them before the main directive
@@ -63,6 +64,3 @@ app.use('/node_modules', express.static(path.join(__dirname, '../node_modules'))
 app.listen(port, function() {
   console.log(`Hauth example server running at http://localhost:${port}`)
 })
-}
-
-init();
