@@ -13,11 +13,11 @@ app.use(bodyParser.text());
 
 const pg = require('pg');
 const db = new pg.Pool({
-    host: 'localhost',
-    port: 5432,
-    database: 'test',
-    user: 'testuser',
-    password: 'testpass',
+  host: 'localhost',
+  port: 5432,
+  database: 'test',
+  user: 'testuser',
+  password: 'testpass',
 });
 
 const config = {
