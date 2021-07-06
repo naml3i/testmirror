@@ -24,6 +24,7 @@ const config = {
   // Refer to the README file for the description of the params
   //cookiename: 'hauth', // optional, default value is 'hauth'
   roles: ['admin', 'user'],
+  defaultUsers: [{ login: 'admin', role: 'admin', password: 'admin' }],
   accessRules: {
     '/node_modules': 'skip',    // disable access control
     '/whoami': 'allow',         // everyone can check his/her profile
@@ -41,7 +42,6 @@ const hauth = require('../lib/index.js');
 
 /* init Hauth with config params and database handle */
 hauth.init(config, db).then(() => {
-  hauth.addUser({login: 'admin', role: 'admin', password: 'admin'});
   hauth.addUser({login: 'user', password: 'password'}); // no role is defined
 });
 
