@@ -31,9 +31,12 @@ const config = {
     '/hello': ['admin'],        // this is a sensitive feature !
     '/': 'deny',                // forbid everything which is not allowed
   },
-  errorPage: {
-    login: __dirname + '/static/login.html',
-    forbidden: __dirname + '/static/forbidden.html',
+  on401: (req, res) => {
+    if (req.accepts('html')) {
+      res.sendFile(__dirname + '/static/login.html')
+    } else {
+      res.send();
+    }
   }
 };
 

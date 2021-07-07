@@ -24,13 +24,24 @@ Authorization: Basic login:password
 
 ### Role-based Access Control
 
-Ability to define different roles, each user can be assigned a role. Access rules to different URLs are defined based on the roles.
+Hauth manages access rules based on URLs path (without query string) and on roles. Each user can be assigned one role. Access rules look like :
+```cfg
+  '/node_modules': 'skip',  // disable access control => no authentication required
+  /\.css$/:        'skip',  // as same - URLs can be expressed with regex
+  '/app':          'allow', // allowed to any authenticated user
+  '/reserved':   ['admin'], // access granted only to users with role 'admin'
+  '/':             'deny',  // forbid everything which is not allowed
+```
 
 ### Accessing User Data
 
 The app can retrieve user data in `req.user` field.
 
-### Login and Error Pages
+### Custom login and forbidden Pages
+
+In case of missing credentials or access denied, Hauth will respond with 401 or 403 ; else, the response is managed by the application.
+
+Besides, it is possible to manage custom 401 or 403 response, for example in order to provide an authentication form or a "Forbidden" page.
 
 ### Session Storage
 
@@ -85,7 +96,7 @@ postgres=# GRANT ALL PRIVILEGES ON DATABASE mydb TO testuser;
 
 With the correct params to connect to the created PG database, the module will automatically creates two tables (if they do not exist): `hauth_user` and `hauth_role`.
 
-Create an express server with several response page according to the authentication scenarios, and `require` the module `hauth`.
+Create an express app, `require` the module `hauth`, `init` it with db and config parameters, and enjoy !
 
 ## Config parameters
 
@@ -96,7 +107,18 @@ const hauth = require('@horanet/hauth');
 hauth.init(params, db);
 ```
 
-where `db` is the object containing the information to connect to the PG as mentioned above, and `params` is the object containing the following configurations:
+where `db` is the object containing the information to connect to the PG as mentioned above, for example
+```js
+const db = {
+  host: 'localhost',
+  port: 5432,
+  database: 'test',
+  user: 'testuser',
+  password: 'testpass'
+}
+```
+
+and `params` is the object containing the following configurations:
 
 - `cookiename`: optional, the default value is `hauth`
 - JWT parameters, as defined in [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) module
@@ -120,7 +142,8 @@ where `URL` is either a [regex](https://en.wikipedia.org/wiki/Regular_expression
 
 These rules are tested in the order they are listed, until a rule matches.
 
-- `errorPage`: path to the error page in case of returning forbidden code (`401`, `403`, etc.)
+- `on401` (optional): function to provide custom response if user authentication is required (typically used to send an authentication form)
+- `on403` (optional): function to provide custom response in case of access denied
 - `autocreate`
 - `defaultUsers`
 
@@ -130,15 +153,15 @@ This `hauth` module exposes the following functions:
 
 ### init
 
-Initialize the module. This function takes in the `config` and `dbh`, then create the two tables `hauth_role` and `hauth_user`, then fill in the `roles` if they are defined in `config`.
+Initialize the module. This function takes in the `config` and `db` parameters ; it creates the two tables `hauth_role` and `hauth_user` if necessary (and thus fills the default users), then fill in the `roles` defined in `config`.
 
 ### control
 
-runs authentication and access control
+Runs authentication and access control
 
 ### allowed
 
-Function allowed(role, url, [rule]): this function return `True` if a user with rule `<rule>` is authorized to access `<url>`.
+Function allowed(role, url): this function return `True` if a user with rule `<rule>` is authorized to access `<url>`.
 
 ### getCookie
 
@@ -176,7 +199,6 @@ To run the example (the script located in `./example/index.js`):
 
 ```shell
 npm install
-
 npm run example
 ```
 
