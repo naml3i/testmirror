@@ -135,7 +135,9 @@ and `params` is the object containing the following configurations:
 URL: <keyword> or <list of accepted profiles> 
 ```
 
-where `URL` is either a [regex](https://en.wikipedia.org/wiki/Regular_expression) corresponding to the path of the input URL; or a link corresponding to the starting of the input URL (query string is ignored).
+where `URL` is
+* a path, matching the starting of the request path (hence, starting with '/'), e.g. `'/files/'`
+* or a [regex](https://en.wikipedia.org/wiki/Regular_expression) string matching a part of the request path, e.g. `'\.css$'` (in both cases, request query string is ignored).
 
 - The keywords are:
   - `allow`: allowed access to any authenticated user

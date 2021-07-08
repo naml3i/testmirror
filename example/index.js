@@ -10,6 +10,7 @@ app.use(cookieParser());
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
+app.use(bodyParser.json());
 
 const pg = require('pg');
 const db = new pg.Pool({
@@ -26,10 +27,12 @@ const config = {
   roles: ['admin', 'user'],
   defaultUsers: [{ login: 'admin', role: 'admin', password: 'admin' }],
   accessRules: {
-    '/node_modules': 'skip',    // disable access control
+    '/node_modules': 'skip',    // disable access control for node modules
     '/whoami': 'allow',         // everyone can check his/her profile
-    '/hello': ['admin'],        // this is a sensitive feature !
-    '/': 'deny',                // forbid everything which is not allowed
+    '/hauth/deluser': 'deny',   // no one can delete an account
+    '/hauth': ['admin'],        // account management is reserved to admins
+    '\.css$': 'skip',           // disable access control for css files
+    // by default, access to all other paths is denied
   },
   on401: (req, res) => {
     if (req.accepts('html')) {
@@ -56,30 +59,14 @@ hauth.init(config, db).then(() => {
 app.use('/hauth/login', hauth.getCookie);
 app.use('/hauth/logout', hauth.delCookie);
 
-//Route to test hauth delUser
-app.use('/api/del/user/:user_login', async (req, res) => {
-  // Grab data from the URL parameters
-  const user_login = req.params.user_login;
-  var user = {login: user_login}
-  console.log(user)
-  checkresult = hauth.delUser(user)
-  console.log("checkresult:", checkresult)
-  res.send("done...: ");
-});
-
-//Route to test hauth MOD user
-app.use('/api/mod/user/:user_login', async (req, res) => {
-  // Grab data from the URL parameters
-  const user_login = req.params.user_login;
-  var user = {login: user_login, password: "defaultpass", name: "DEFAULT NAME", role: "user"}
-  console.log("UPDATE user: ", user)
-  checkresult = hauth.modUser(user_login, user)
-  console.log("checkresult:", checkresult)
-  res.send("done...: ");
-});
-
-/* Main directive: enables access control */
+/* The main directive: enables access control
+ * Must be put before any other `app.use()` directive with access control*/
 app.use('/', hauth.control);
+
+/* Account management */
+app.use('/hauth/adduser/',       (req, res) => { res.send(hauth.addUser(req.body)) });
+app.use('/hauth/moduser/:login', (req, res) => { res.send(hauth.modUser(req.params.login, req.body)) });
+app.use('/hauth/deluser/:login', (req, res) => { res.send(hauth.delUser(req.params.login)) });
 
 /* App */
 app.use('/hello', (req, res) => {res.send(`Hello dear ${req.user.login}`)});
