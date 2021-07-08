@@ -77,6 +77,29 @@ The default user accounts are created only at the first use of the module, right
 
 ## Usage
 
+Create an express app, `require` the module `hauth`, `init` it with `db` and `config` parameters, and enjoy!
+
+```js
+const express = require('express');
+const app = express();
+
+const pg = require('pg');
+const db = new pg.Pool( /* PG params */ );
+const config = { /* cf doc below */ };
+const hauth = require('@horanet/hauth');
+hauth.init(config, db);
+
+app.use('/hauth/login', hauth.getCookie);
+app.use('/hauth/logout', hauth.delCookie);
+app.use('/', hauth.control);
+
+app.use( /* app code */ );
+app.listen(port, () => { /* ... */ });
+```
+
+For more features, look at the example provided.
+
+### PG tips
 Assume the database parameters are as follows:
 
 ```cfg
@@ -97,8 +120,6 @@ postgres=# GRANT ALL PRIVILEGES ON DATABASE mydb TO testuser;
 ```
 
 With the correct params to connect to the created PG database, the module will automatically creates two tables (if they do not exist): `hauth_user` and `hauth_role`.
-
-Create an express app, `require` the module `hauth`, `init` it with `db` and `config` parameters, and enjoy!
 
 ## Config parameters
 
