@@ -56,6 +56,28 @@ hauth.init(config, db).then(() => {
 app.use('/hauth/login', hauth.getCookie);
 app.use('/hauth/logout', hauth.delCookie);
 
+//Route to test hauth delUser
+app.use('/api/del/user/:user_login', async (req, res) => {
+  // Grab data from the URL parameters
+  const user_login = req.params.user_login;
+  var user = {login: user_login}
+  console.log(user)
+  checkresult = hauth.delUser(user)
+  console.log("checkresult:", checkresult)
+  res.send("done...: ");
+});
+
+//Route to test hauth MOD user
+app.use('/api/mod/user/:user_login', async (req, res) => {
+  // Grab data from the URL parameters
+  const user_login = req.params.user_login;
+  var user = {login: user_login, password: "defaultpass", name: "DEFAULT NAME", role: "user"}
+  console.log("UPDATE user: ", user)
+  checkresult = hauth.modUser(user_login, user)
+  console.log("checkresult:", checkresult)
+  res.send("done...: ");
+});
+
 /* Main directive: enables access control */
 app.use('/', hauth.control);
 
