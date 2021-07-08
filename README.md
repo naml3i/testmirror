@@ -28,11 +28,12 @@ Hauth manages access rules based on URLs path (without query string) and on role
 
 ```cfg
 '/node_modules': 'skip',    // disable access control => no authentication required
-/\.css$/:        'skip',    // as same - URLs can be expressed with regex
+'\.css$':        'skip',    // as same - URLs can be expressed with regex
 '/app':          'allow',   // allowed to any authenticated user
 '/reserved':     ['admin'], // access granted only to users with role 'admin'
 '/':             'deny',    // forbid everything which is not allowed
 ```
+By default, access is denied if no access rule matches.
 
 ### Accessing User Data
 
@@ -132,12 +133,12 @@ and `params` is the object containing the following configurations:
 - `accessRules`: dictate the behavior of the control function, according to the URLs, with the following format:
 
 ```config
-URL: <keyword> or <list of accepted profiles> 
+<pattern>: <keyword> or <list of accepted profiles> 
 ```
 
-where `URL` is
-* a path, matching the starting of the request path (hence, starting with '/'), e.g. `'/files/'`
-* or a [regex](https://en.wikipedia.org/wiki/Regular_expression) string matching a part of the request path, e.g. `'\.css$'` (in both cases, request query string is ignored).
+where `pattern` is
+* a path, matching the starting of the request path (hence, starting with `/`), e.g. `'/files/'`
+* or a [regex](https://en.wikipedia.org/wiki/Regular_expression) string matching a part of the request path, e.g. `'\.css$'` (a pattern is recognized as a regex by the fact that it does not start with `/`)
 
 - The keywords are:
   - `allow`: allowed access to any authenticated user
