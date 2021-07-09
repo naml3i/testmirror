@@ -43,8 +43,7 @@ const config = {
   }
 };
 
-/* TODO: remplacer './lib/index.js' par '@horanet/hauth' */
-const hauth = require('../lib/index.js');
+const hauth = require('@horanet/hauth');
 
 /* init Hauth with config params and database handle */
 hauth.init(config, db).then(() => {
