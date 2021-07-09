@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+body {
+text-align: center;
+margin: 100px auto;
+font-weight: bold;
+}
+#message, body input {
+display: block;
+width: 200px;
+margin: 10px auto;
+}
+#message {
+display: none;
+border: 2px solid #F44;
+border-radius: 4px;
+background-color: #FDD;
+}
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <div>Example login page. This page is controlled by hauth. </div>
+            <div>Enter login information to proceed...</div>
+            <div id="message"></div>
+            <input type="text" id="login" placeholder="Login" value="admin"/>
+            <input type="password" id="password" placeholder="Password" value="admin"/>
+            <input type="submit" value="Connexion" onclick="login()"/>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script type="text/javascript">
+function login() {
+    $.ajax('/hauth/login', {
+        method: 'post',
+        data: {
+            login: $('#login').val(),
+            password: $('#password').val(),
+        },
+        success: function(data) {
+            document.location.reload(true);
+        },
+        error: function(xhr, status, error) {
+            $('#message').text('Error: ' + xhr.responseText).show()
+        }
+    });
+}
+        </script>
+    </body>
+</html>
