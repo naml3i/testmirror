@@ -147,15 +147,19 @@ const db = new pg.Pool({
 and `params` is an object containing the configuration parameters (all optional) :
 
 ### `cookiename`
+
 the default value is `hauth`
 
 ### JWT parameters
+
 as defined in [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) module
+
 - `jwt_key`: key used to cipher JSON web tokens, optional ; if not defined,randomly generated at each server startup
 - `jwt_alg`: algorithm used for signing JWT, default value is `HS256`
 - `jwt_exp`: expiration time for JWT, default `2h` for 2 hours
 
 ### `roles`
+
 an array with the name of the roles. Each user can be assigned one role granting access to some URLs according to `accessRules`. For example, `roles = ['admin', 'basic_user']`
 
 ### `accessRules`
@@ -172,6 +176,7 @@ where `pattern` is:
 - or a [regex](https://en.wikipedia.org/wiki/Regular_expression) string matching a part of the request path, e.g. `'\.css$'` (a pattern is recognized as a regex by the fact that it does not start with `/`)
 
 The keywords are:
+
 - `allow`: allowed access to any authenticated user
 - `deny`: access forbidden
 - `skip`: allowed access without authentication
@@ -181,13 +186,17 @@ These rules are tested in the order they are listed, until a rule matches.
 If no access rule matches the URL, the default rule is `allow`. So, in order to forbid anything that is not explicitly allowed, you should end the access rules with the rule `'/': 'deny'`
 
 ### `on401`
+
 A function to provide custom response if user authentication is required (typically used to send an authentication form)
 ### `on403`
+
 A function to provide custom response in case of access denied
 ### `autocreate`
+
 A function to make possible for an unregistered client to create its own accounts. If this function is defined, if an unknown client provides username and password in an 'Authorization: Basic' header, it makes it possible to check the credentials and to run some more code; if this function returns a non-null object describing an account, Hauth will create the account in hauth_user and deliver a new password (in a 'X-Next-Password' Header).
 
 For example
+
 ```js
   autocreate: async function(login, pwd, db) {
     if (pwd === 'secret') { // this magic password allows to create any admin account
@@ -198,6 +207,7 @@ For example
 ```
 
 ### `defaultUsers`
+
 An array of users to be created along with tables hauth_users and hauth_roles. This is intended for initing apps; These accounts can then be modified or deleted, and will not be recreated at each server startup.
 
 ## APIs
