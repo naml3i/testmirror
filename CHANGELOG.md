@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.1 (2021-08-25)
+
+
+### Bug Fixes
+
+* md file linting (revert No of version back to 0.1.0, this will be changed by npm run release) ([a55b13a](https://gitlab.horanet.com/hframework/hauth/commit/a55b13acab50fe9aeb15fb389e165891a149d77f))
+
 ### [0.0.6](https://gitlab.horanet.com/hframework/hauth/compare/v0.0.5...v0.0.6) (2021-07-09)
 
 
