@@ -33,6 +33,7 @@ Hauth manages access rules based on URLs path (without query string) and on role
 '/reserved':     ['admin'], // access granted only to users with role 'admin'
 '/':             'deny',    // forbid everything which is not allowed
 ```
+
 By default, access is denied if no access rule matches.
 
 ### Accessing User Data
@@ -100,6 +101,7 @@ app.listen(port, () => { /* ... */ });
 For more features, look at the example provided.
 
 ### PG tips
+
 Assume the database parameters are as follows:
 
 ```cfg
@@ -157,9 +159,10 @@ and `params` is the object containing the following configurations:
 <pattern>: <keyword> or <list of accepted profiles> 
 ```
 
-where `pattern` is
-* a path, matching the starting of the request path (hence, starting with `/`), e.g. `'/files/'`
-* or a [regex](https://en.wikipedia.org/wiki/Regular_expression) string matching a part of the request path, e.g. `'\.css$'` (a pattern is recognized as a regex by the fact that it does not start with `/`)
+where `pattern` is:
+
+- a path, matching the starting of the request path (hence, starting with `/`), e.g. `'/files/'`
+- or a [regex](https://en.wikipedia.org/wiki/Regular_expression) string matching a part of the request path, e.g. `'\.css$'` (a pattern is recognized as a regex by the fact that it does not start with `/`)
 
 - The keywords are:
   - `allow`: allowed access to any authenticated user
