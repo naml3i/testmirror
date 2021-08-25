@@ -32,7 +32,7 @@ const config = {
     '/hauth/deluser': 'deny',   // no one can delete an account
     '/hauth': ['admin'],        // account management is reserved to admins
     '\.css$': 'skip',           // disable access control for css files
-    // by default, access to all other paths is denied
+    // by default, access to all other paths is allowed to authenticated users
   },
   on401: (req, res) => {
     if (req.accepts('html')) {
@@ -64,9 +64,9 @@ app.use('/hauth/logout', hauth.delCookie);
 app.use('/', hauth.control);
 
 /* Account management */
-app.use('/hauth/adduser/',       (req, res) => { res.send(hauth.addUser(req.body)) });
-app.use('/hauth/moduser/:login', (req, res) => { res.send(hauth.modUser(req.params.login, req.body)) });
-app.use('/hauth/deluser/:login', (req, res) => { res.send(hauth.delUser(req.params.login)) });
+app.use('/hauth/adduser/',       async (req, res) => { res.send(await hauth.addUser(req.body)) });
+app.use('/hauth/moduser/:login', async (req, res) => { res.send(await hauth.modUser(req.params.login, req.body)) });
+app.use('/hauth/deluser/:login', async (req, res) => { res.send(await hauth.delUser(req.params.login)) });
 
 /* App */
 app.use('/hello', (req, res) => {res.send(`Hello dear ${req.user.login}`)});
