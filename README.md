@@ -193,6 +193,10 @@ A function to provide custom response if user authentication is required (typica
 
 A function to provide custom response in case of access denied
 
+### `onLogout`
+
+A function to provide custom response when the user logs out
+
 ### `autocreate`
 
 A function to make possible for an unregistered client to create its own accounts. If this function is defined, if an unknown client provides username and password in an 'Authorization: Basic' header, it makes it possible to check the credentials and to run some more code; if this function returns a non-null object describing an account, Hauth will create the account in hauth_user and deliver a new password (in a 'X-Next-Password' Header).
