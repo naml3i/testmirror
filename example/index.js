@@ -45,7 +45,12 @@ const config = {
   onLogout: (req, res) => { res.send('You are logged out') },
 };
 
-const hauth = require('@horanet/hauth');
+var hauth;
+try {
+  hauth = require('@horanet/hauth');
+}catch {
+  hauth = require('../lib/index');
+}
 
 /* init Hauth with config params and database handle */
 hauth.init(config, db).then(() => {
