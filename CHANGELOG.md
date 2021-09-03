@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.2...v0.1.3) (2021-09-03)
+
+
+### Bug Fixes
+
+* Excessive package size ([b5af6c0](https://gitlab.horanet.com/hframework/hauth/commit/b5af6c01e0e4343ba8089bcf622f159835db4d44))
+
 ### [0.1.2](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.1...v0.1.2) (2021-09-03)
 
 
