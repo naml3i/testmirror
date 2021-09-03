@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.1...v0.1.2) (2021-09-03)
+
+
+### Features
+
+* add param onLogout ([d0862a1](https://gitlab.horanet.com/hframework/hauth/commit/d0862a10f0adc9ac51e3041f8f31f63eb49c42de))
+
 ### 0.1.1 (2021-08-25)
 
 
