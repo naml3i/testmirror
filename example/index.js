@@ -42,6 +42,7 @@ const config = {
     }
   },
   on403: (req, res) => { res.send('Forbidden') },
+  onLogout: (req, res) => { res.send('You are logged out') },
 };
 
 const hauth = require('@horanet/hauth');
