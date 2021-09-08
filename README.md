@@ -238,7 +238,16 @@ Sign and verify token using `jsonwebtoken` module.
 
 ### delCookie
 
-Delete cookie when the current user logs out.
+Delete cookie (so as to log out the current user).
+
+### getUser
+
+Given a login, returns a user profile, with password and `next_password`
+- Input parameter `login` (string)
+- Return an array `[user, password, next_password]` with
+  - `user`: a JSON object containing all user data, except `password` and `next_password`
+  - `password`: a string, or null if not defined
+  - `next_password`: a string, or null if not defined
 
 ### addUser
 
