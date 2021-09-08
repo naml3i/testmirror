@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.3...v0.1.4) (2021-09-08)
+
+
+### Features
+
+* export function getUser ([eb85856](https://gitlab.horanet.com/hframework/hauth/commit/eb85856ebb498cd748184153d075c62dbc620399))
+
 ### [0.1.3](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.2...v0.1.3) (2021-09-03)
 
 
