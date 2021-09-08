@@ -9,6 +9,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 * export function getUser ([aa31e00](https://gitlab.horanet.com/hframework/hauth/commit/aa31e0043899cb1c73f89b9f2837be8fc918b49b))
 
+### [0.1.4](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.3...v0.1.4) (2021-09-08)
+
+
+### Features
+
+* export function getUser ([aa31e00](https://gitlab.horanet.com/hframework/hauth/commit/aa31e0043899cb1c73f89b9f2837be8fc918b49b))
+
 ### [0.1.3](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.2...v0.1.3) (2021-09-03)
 
 
