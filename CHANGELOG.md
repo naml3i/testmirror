@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.4...v0.1.5) (2021-10-13)
+
+
+### Features
+
+* config parameters can be changed after init ([a029201](https://gitlab.horanet.com/hframework/hauth/commit/a029201b8387727f05226ddbe6ca1b7c95dae01e))
+
 ### [0.1.4](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.3...v0.1.4) (2021-09-08)
 
 
