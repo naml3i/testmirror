@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.5...v0.1.6) (2021-10-18)
+
+
+### Bug Fixes
+
+* bug with next password when equal to password ([b5483d0](https://gitlab.horanet.com/hframework/hauth/commit/b5483d0b84ac46d3772849052514af72c8dadfd5))
+
 ### [0.1.5](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.4...v0.1.5) (2021-10-13)
 
 
