@@ -1,0 +1,109 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hauth
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-30 07:54+0000\n"
+"PO-Revision-Date: 2021-03-30 07:54+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hauth
+#: model:ir.model.fields,help:hauth.field_hauth_user__name
+msgid "Account name"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user__id
+msgid "ID"
+msgstr ""
+
+#. module: hauth
+#: model_terms:ir.ui.view,arch_db:hauth.hauth_user_view_form
+msgid "Informations"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user__login
+msgid "Login"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user__name
+msgid "Name"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user__next_password
+msgid "Next Password"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,field_description:hauth.field_hauth_user__password
+msgid "Password"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,help:hauth.field_hauth_user__next_password
+msgid "Set automatically or by an admin"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model,name:hauth.model_hauth_user
+msgid "User login tables"
+msgstr ""
+
+#. module: hauth
+#: model:ir.model.fields,help:hauth.field_hauth_user__login
+msgid "Username"
+msgstr ""
+
+#. module: hauth
+#: model:ir.actions.act_window,name:hauth.action_hauth_user
+#: model:ir.ui.menu,name:hauth.hauth_user_menu
+#: model_terms:ir.ui.view,arch_db:hauth.hauth_user_view_form
+#: model_terms:ir.ui.view,arch_db:hauth.hauth_user_view_list
+msgid "Users"
+msgstr ""
+
+#. module: hauth
+#: model:ir.ui.menu,name:hauth.hauth_base_menu
+msgid "hauth"
+msgstr ""

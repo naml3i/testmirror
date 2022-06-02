@@ -28,6 +28,8 @@ module.exports = {
     delUser:   checkInit(delUser),
     modUser:   checkInit(modUser),
     addRoles:  checkInit(addRoles),
+    checkUser: checkInit(checkUser),
+    checkToken:checkInit(checkToken)
 };
 
 async function init (config, dbh) {

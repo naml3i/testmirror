@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="hauth_user_view_form" model="ir.ui.view">
+        <field name="name">Users form view</field>
+        <field name="model">hauth.user</field>
+        <field name="arch" type="xml">
+            <form string="Users">
+                <sheet>
+                    <group string="Informations">
+                        <field name="login"/>
+                        <field name="name"/>
+                        <field name="password"/>
+                        <field name="next_password"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hauth_user_view_list" model="ir.ui.view">
+    <field name="name">Users list view</field>
+        <field name="model">hauth.user</field>
+        <field name="arch" type="xml">
+            <tree string="Users">
+                <field name="login"/>
+                <field name="name"/>
+                <field name="password"/>
+                <field name="next_password"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_hauth_user" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="res_model">hauth.user</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="hauth_user_view_list"/>
+    </record>
+</odoo>

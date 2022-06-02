@@ -1,0 +1,12 @@
+<odoo>
+
+    <!-- Top menu item -->
+    <menuitem name="hauth" id="hauth_base_menu"/>
+
+    <!-- menu categories -->
+    <menuitem name="Users" id="hauth_user_menu"
+              parent="hauth_base_menu"
+              action="hauth.action_hauth_user"/>
+
+
+</odoo>

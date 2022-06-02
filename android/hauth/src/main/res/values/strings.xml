@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_type">sesame.horanet.com</string>
+    <string name="account_label">Horanet</string>
+    <string name="account_name">sesame</string>
+    <string name="authorities">horanet.sesame.hauth.HAuth</string>
+</resources>
