@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.7...v0.1.8) (2022-06-02)
+
+
+### Bug Fixes
+
+* some middleware functions did not call next() ([6551582](https://gitlab.horanet.com/hframework/hauth/commit/6551582b2e099b8a049fe5b9195b2c01c9f9b6d5))
+
+### [0.1.7](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.6...v0.1.7) (2022-04-28)
+
+
+### Features
+
+* export functions checkUser and checkToken
+
+
 ### [0.1.6](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.5...v0.1.6) (2021-10-18)
 
 
@@ -15,13 +30,6 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * config parameters can be changed after init ([a029201](https://gitlab.horanet.com/hframework/hauth/commit/a029201b8387727f05226ddbe6ca1b7c95dae01e))
-
-### [0.1.4](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.3...v0.1.4) (2021-09-08)
-
-
-### Features
-
-* export function getUser ([aa31e00](https://gitlab.horanet.com/hframework/hauth/commit/aa31e0043899cb1c73f89b9f2837be8fc918b49b))
 
 ### [0.1.4](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.3...v0.1.4) (2021-09-08)
 
