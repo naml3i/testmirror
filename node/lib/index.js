@@ -333,7 +333,7 @@ function pwgen() {
   return Math.random().toString(36).substring(2, 12);
 }
 
-async function getCookie(req, res) {
+async function getCookie(req, res, next) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate');
   if (await checkUser(req, res)) {
     const token = jwt.sign(req.user, cfg().jwt_key, {algorithm: cfg().jwt_alg, expiresIn: cfg().jwt_exp});
@@ -342,14 +342,16 @@ async function getCookie(req, res) {
   } else {
     res.status(401).send();
   }
+  next();
 };
 
-function delCookie(req, res) {
+function delCookie(req, res, next) {
   res.clearCookie(cfg().cookiename);
   if (cfg().onLogout) {
       cfg().onLogout(req, res);
   } else {
       res.send();
   }
+  next();
 };
 
