@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.6...v0.1.8) (2022-06-02)
+
+
+### Bug Fixes
+
+* some middleware functions did not call next() ([6551582](https://gitlab.horanet.com/hframework/hauth/commit/6551582b2e099b8a049fe5b9195b2c01c9f9b6d5))
+
 ### [0.1.6](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.5...v0.1.6) (2021-10-18)
 
 
