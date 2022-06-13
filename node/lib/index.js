@@ -272,7 +272,7 @@ async function checkUser(req, res) {
       console.warn(`Attempt to login as ${login} with bad password`);
     } else { // login inconnu
       if (cfg().autocreate) {
-        user = await cfg().autocreate(login, pwd, db);
+        user = await cfg().autocreate(login, pwd, db, req.headers);
         if (user) {
           req.user = user;
           user.next_password = pwgen(); // génération d'un mot de passe
