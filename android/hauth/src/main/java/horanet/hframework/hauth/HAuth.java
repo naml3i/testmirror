@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -55,7 +56,7 @@ public class HAuth {
         try {
             sharedPreferences = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
             connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            serial = getSerial(sharedPreferences);
+            serial = getSerial(context, sharedPreferences);
 
             login = sharedPreferences.getString(SHARED_PREFS_LOGIN, "");
             server = sharedPreferences.getString(SHARED_PREFS_SERVER, "");
@@ -106,14 +107,16 @@ public class HAuth {
         return login;
     }
 
-    private String getSerial(SharedPreferences sharedPreferences) {
+    private String getSerial(Context context, SharedPreferences sharedPreferences) {
         serial = sharedPreferences.getString(HAuth.SHARED_PREFS_SERIAL, "");
         if (serial.isEmpty()) {
             // There is no serial in shared preferences, so get it from the system
             if (Build.MANUFACTURER.equals(MANUFACTURER_HORANET) && Build.MODEL.equals(HORANET_PM098))
                 serial = SystemUtils.getBuiltinSerialNumber();
-            else
+            else if (!Build.SERIAL.equals(Build.UNKNOWN))
                 serial = Build.SERIAL;
+            else
+                serial = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
             Log.i(TAG, "getSerial MANUFACTURER " + Build.MANUFACTURER + " MODEL " + Build.MODEL + " Serial Number " + serial);
 
             if (serial == null)
@@ -207,7 +210,7 @@ public class HAuth {
                 }
             } catch (IOException | NullPointerException e) {
                 Log.e(TAG, "Error: getResponseCode " + e.getClass().getSimpleName());
-                if (DEBUG) e.printStackTrace();
+                /*if (DEBUG)*/ e.printStackTrace();
             } // finally: let a caller calls HttpURLConnection.disconnect();
         } else {
             Log.e(TAG, "Error: no connection");

@@ -101,7 +101,7 @@ public class HttpConnection {
             Log.d(TAG, "setupHttpURLConnection set output OK");
         } catch (IOException e) {
             Log.e(TAG, "Error: setupHttpURLConnection " + e.getClass().getSimpleName());
-            if (DEBUG)
+            //if (DEBUG)
                 e.printStackTrace();
         }
         return httpConn;
