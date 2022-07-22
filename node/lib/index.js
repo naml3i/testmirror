@@ -19,17 +19,19 @@ function checkInit(fun) {
 }
 module.exports = {
     init: init,
-    control:   checkInit(control),
-    allowed:   checkInit(allowed),
-    getCookie: checkInit(getCookie),
-    delCookie: checkInit(delCookie),
-    getUser:   checkInit(getUser),
-    addUser:   checkInit(addUser),
-    delUser:   checkInit(delUser),
-    modUser:   checkInit(modUser),
-    addRoles:  checkInit(addRoles),
-    checkUser: checkInit(checkUser),
-    checkToken:checkInit(checkToken)
+    control:       checkInit(control),
+    allowed:       checkInit(allowed),
+    getCookie:     checkInit(getCookie),
+    delCookie:     checkInit(delCookie),
+    getUser:       checkInit(getUser),
+    addUser:       checkInit(addUser),
+    delUser:       checkInit(delUser),
+    modUser:       checkInit(modUser),
+    addRoles:      checkInit(addRoles),
+    checkUser:     checkInit(checkUser),
+    checkToken:    checkInit(checkToken),
+    addCookie:     checkInit(addCookie),
+    generateCookie:checkInit(generateCookie)
 };
 
 async function init (config, dbh) {
@@ -333,11 +335,23 @@ function pwgen() {
   return Math.random().toString(36).substring(2, 12);
 }
 
+function generateCookie(user)
+{
+	return jwt.sign(user, cfg().jwt_key, {algorithm: cfg().jwt_alg, expiresIn: cfg().jwt_exp})
+}
+
+function addCookie(req, res)
+{
+	const token = generateCookie(req.user);
+
+	res.cookie(cfg().cookiename, token, {httpOnly: true});
+	res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate');
+}
+
 async function getCookie(req, res, next) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate');
   if (await checkUser(req, res)) {
-    const token = jwt.sign(req.user, cfg().jwt_key, {algorithm: cfg().jwt_alg, expiresIn: cfg().jwt_exp});
-    res.cookie(cfg().cookiename, token, {httpOnly: true});
+    addCookie(req, res);
     res.status(200).send(req.user);
   } else {
     res.status(401).send();
