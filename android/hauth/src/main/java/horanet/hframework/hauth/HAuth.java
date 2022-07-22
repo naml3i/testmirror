@@ -210,7 +210,7 @@ public class HAuth {
                 }
             } catch (IOException | NullPointerException e) {
                 Log.e(TAG, "Error: getResponseCode " + e.getClass().getSimpleName());
-                /*if (DEBUG)*/ e.printStackTrace();
+                if (DEBUG) e.printStackTrace();
             } // finally: let a caller calls HttpURLConnection.disconnect();
         } else {
             Log.e(TAG, "Error: no connection");
