@@ -178,28 +178,26 @@ async function delUser(login) {
  */
 async function control (req, res, next) {
   const rule = getRule(req.path);
-  if (rule === 'skip') {
-    next();
+  const hasUser = req.user || checkToken(req) || await checkUser(req, res);
+  let cb;
+
+  if (rule === 'skip')
+    return next();
+
+  if (!hasUser) {
+    res.status(401);
+    cb = cfg().on401;
+  } else if (allowed(req.user.role, req.path, rule)) {
+      return next();
   } else {
-    if (req.user || checkToken(req) || await checkUser(req, res)) {
-      if (allowed(req.user.role, req.path, rule)) {
-        next();
-      } else {
-        res.status(403);
-        if (cfg().on403) {
-          cfg().on403(req, res);
-        } else {
-          res.send();
-        }
-      }
-    } else {
-      res.status(401)
-      if (cfg().on401) {
-        cfg().on401(req, res);
-      } else {
-        res.send();
-      }
-    }
+    res.status(403);
+    cb = cfg().on403;
+  }
+
+  if (cb) {
+    cb(req, res);
+  } else {
+    res.send();
   }
 }
 
