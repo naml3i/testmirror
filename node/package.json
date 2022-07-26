@@ -1,6 +1,6 @@
 {
   "name": "@horanet/hauth",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Authentication module for web apps with PG database",
   "main": "lib/index.js",
   "scripts": {
