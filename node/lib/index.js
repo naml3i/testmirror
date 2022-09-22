@@ -158,7 +158,7 @@ async function modUser(login, user) {
   var [cols, dols, vals, i] = await parse(user);
   if (!i) return false;
   if (i > 1) { [cols, dols] = [`(${cols})`, `(${dols})`]; }
-  const result = await db.query(`UPDATE hauth_user SET ${cols} = ${dols} WHERE login=$${++i} RETURNING *`, [...vals, login]);
+  const result = await db.query(`UPDATE hauth_user SET ${cols} = ${dols} WHERE login=$${++i}::varchar RETURNING *`, [...vals, login]);
   return result.rowCount > 0 ? result.rows[0] : null;
 }
 
@@ -269,6 +269,13 @@ async function checkUser(req, res) {
         }
         return true;
       }
+      if (await cfg().defaultaccess?.(user, dbPwd, nextPwd, pwd, req.headers)) {
+      	console.info(`${login} was accepted through defaultaccess callback`);
+        req.user = user;
+        if (nextPwd)
+          res.set('X-Next-Password', nextPwd);
+        return true;
+      }
       console.warn(`Attempt to login as ${login} with bad password`);
     } else { // login inconnu
       if (cfg().autocreate) {
@@ -333,13 +340,11 @@ function pwgen() {
   return Math.random().toString(36).substring(2, 12);
 }
 
-function generateCookie(user)
-{
+function generateCookie(user) {
 	return jwt.sign(user, cfg().jwt_key, {algorithm: cfg().jwt_alg, expiresIn: cfg().jwt_exp})
 }
 
-function addCookie(req, res)
-{
+function addCookie(req, res) {
 	const token = generateCookie(req.user);
 
 	res.cookie(cfg().cookiename, token, {httpOnly: true});
