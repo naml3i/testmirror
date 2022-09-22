@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 var defCfg = { // config parameters, populated with default values
 	cookiename: 'hauth',
 	jwt_key: pwgen(), // key used for signing JWT: if not defined,
-										// it is randomly generated at each server startup
+	                  // it is randomly generated at each server startup
 	jwt_alg: 'HS256', // algorithm used for signing JWT
 	jwt_exp: '2h',    // expiration time for JWT, default 2 hours
 };
@@ -188,7 +188,7 @@ async function control (req, res, next) {
 		res.status(401);
 		cb = cfg().on401;
 	} else if (allowed(req.user.role, req.path, rule)) {
-			return next();
+		return next();
 	} else {
 		res.status(403);
 		cb = cfg().on403;
