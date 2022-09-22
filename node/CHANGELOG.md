@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.9...v0.1.10) (2022-07-26)
+
+### [0.1.9](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.6...v0.1.9) (2022-06-13)
+
+
+### Features
+
+* request headers passed to autocreate function ([27bd70e](https://gitlab.horanet.com/hframework/hauth/commit/27bd70ef7ea688bceab33e3f2fbe073de564ca5b))
+
+
+### Bug Fixes
+
+* some middleware functions did not call next() ([6551582](https://gitlab.horanet.com/hframework/hauth/commit/6551582b2e099b8a049fe5b9195b2c01c9f9b6d5))
+
 ### [0.1.8](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.7...v0.1.8) (2022-06-02)
 
 
