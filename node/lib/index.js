@@ -359,7 +359,6 @@ async function getCookie(req, res, next) {
   } else {
     res.status(401).send();
   }
-  next();
 };
 
 function delCookie(req, res, next) {
@@ -369,6 +368,5 @@ function delCookie(req, res, next) {
   } else {
       res.send();
   }
-  next();
 };
 
