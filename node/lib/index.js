@@ -34,7 +34,7 @@ module.exports = {
 	generateCookie:checkInit(generateCookie)
 };
 
-async function init (config, dbh) {
+async function init(config, dbh) {
 	if (db) {
 		console.warn('Hauth is already inited');
 		return;
@@ -54,7 +54,7 @@ function cfg() {
 /**
  * check if a table exists in database
  */
-async function missing (tablename) {
+async function missing(tablename) {
 	const test = await db.query(
 		`SELECT count(*) FROM pg_catalog.pg_tables WHERE tablename=$1`,
 		[tablename]
@@ -176,7 +176,7 @@ async function delUser(login) {
  * authentication and access control (display page/error page...)
  * based on access rule of each path user
  */
-async function control (req, res, next) {
+async function control(req, res, next) {
 	const rule = getRule(req.path);
 	const hasUser = req.user || checkToken(req) || await checkUser(req, res);
 	let cb;
@@ -207,7 +207,7 @@ async function control (req, res, next) {
 function getRule(url) {
 	for (const [pattern, rule] of Object.entries(cfg().accessRules)) {
 		if (pattern.startsWith('/') && url.startsWith(pattern) || new RegExp(pattern).test(url)) {
-			return rule
+			return rule;
 		}
 	}
 	return 'allow';
@@ -221,13 +221,14 @@ function getRule(url) {
  */
 function allowed(role, url, rule) {
 	rule = rule || getRule(url);
-	if (!rule || rule === 'deny') {
+	if (!rule || rule === 'deny')
 		return false;
-	} else if (rule === 'allow' || rule === 'skip') {
+	else if (rule === 'allow' || rule === 'skip')
 		return true;
-	} else if (Array.isArray(rule)) {
+	else if (Array.isArray(rule))
 		return rule.includes(role) ? true : false;
-	}
+	else if (new RegExp(rule).test(role))
+		return true;
 	console.error(`invalid access rule "${rule}" in hauth config`);
 	return false;
 }
