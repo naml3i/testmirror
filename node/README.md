@@ -212,6 +212,9 @@ For example,
   }
 ```
 
+The autocreate function extra processing should be idempotent. Indeed, a common way to reset client credentials is to remove the corresponding record in haut_user, which induces to re-run the autocreate process. Besides, the client might fail to catch the next password, and thus re-run the autocreate process.  
+Most of the SQL INSERT requests run in that function should finish with `on conflict do nothing`.
+
 ### `defaultUsers`
 
 An array of users to be created along with tables hauth_users and hauth_roles. This is intended for initing apps; These accounts can then be modified or deleted, and will not be recreated at each server startup.

@@ -255,37 +255,42 @@ function checkToken(req) {
  */
 async function checkUser(req, res) {
 	const [login, pwd] = getUserAndPwdFromReq(req);
-	if (login && pwd !== undefined) { // le mot de passe peut être ''
+	if (login && pwd !== undefined) { // pwd may be ''
 		var [user, dbPwd, nextPwd] = await getUser(login);
 		if (user) {
-			if (pwd === nextPwd) {
+			if (pwd === nextPwd) { // client sent next password
 				req.user = user;
 				await updatePwd(login, pwd);
 				return true;
 			}
-			if (dbPwd && (pwd === dbPwd || await bcrypt.compare(pwd, dbPwd))) {
+			if (dbPwd && await bcrypt.compare(pwd, dbPwd)) { // client sent normal password
 				req.user = user;
 				if (nextPwd) {
 					res.set('X-Next-Password', nextPwd);
 				}
 				return true;
 			}
-			if (await cfg().defaultaccess?.(user, dbPwd, nextPwd, pwd, req.headers)) {
-				console.info(`${login} was accepted through defaultaccess callback`);
-				req.user = user;
-				if (nextPwd)
-					res.set('X-Next-Password', nextPwd);
-				return true;
+			if (!dbPwd && nextPwd && cfg().autocreate) {
+				// client did not send next password, and normal password is not defined:
+				// client may not have received next password sent during autocreate process,
+				// so the next password must be re-sent
+				if (sameUser(user, await cfg().autocreate(login, pwd, db, req.headers))) {
+					req.user = user;
+					const next_password = pwgen(); // password generation
+					res.set('X-Next-Password', next_password);
+					await modUser(login, { next_password });
+					return true;
+				}
 			}
 			console.warn(`Attempt to login as ${login} with bad password`);
-		} else { // login inconnu
+		} else { // unknown login
 			if (cfg().autocreate) {
 				user = await cfg().autocreate(login, pwd, db, req.headers);
 				if (user) {
 					req.user = user;
-					user.next_password = pwgen(); // génération d'un mot de passe
-					res.set('X-Next-Password', user.next_password);
-					await addUser({...user});
+					const next_password = pwgen(); // password generation
+					res.set('X-Next-Password', next_password);
+					await addUser({ ...user, next_password });
 					return true;
 				}
 			}
@@ -295,9 +300,19 @@ async function checkUser(req, res) {
 	return false;
 }
 
-/** fonction getUserAndPwdFromReq :
- * extrait login et mot de passe, soit du corps de la requête,
- * soit de l'en-tête de requête HTTP 'Authorization: Basic xxx'
+/**
+ * Verify if user1 and user2 are the same
+ * @returns true or false
+ */
+function sameUser(user1, user2) {
+	for (let prop in user1)
+		if (user1.prop !== user2.prop)
+			return false;
+	return user1.length === user2.length;
+}
+
+/**
+ * Extract login and password from request body or from request header 'Authorization: Basic xxx'
  */
 function getUserAndPwdFromReq(req) {
 	const authz = req.headers.authorization;
