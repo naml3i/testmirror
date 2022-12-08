@@ -1,2 +1,0 @@
-configurations.maybeCreate("default")
-artifacts.add("default", file('HI2C-release.aar'))

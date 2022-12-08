@@ -8,8 +8,8 @@ android {
 
     defaultConfig {
         minSdkVersion 23
-        versionCode 133
-        versionName "0.1.14"
+        versionCode 135
+        versionName "0.1.15_BETA"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -23,7 +23,7 @@ android {
             core(MavenPublication) {
                 groupId 'horanet.hframework'
                 artifactId 'hauth'
-                version '0.1.7'
+                version android.defaultConfig.versionName
                 artifact("$buildDir/outputs/aar/hauth-release.aar")
             }
         }
@@ -49,11 +49,12 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(":HI2C")
     implementation 'androidx.appcompat:appcompat:1.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //implementation 'com.android.volley:volley:1.1.1'
     implementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
+
+    implementation 'horanet.hframework.hi2c:hi2c:1.0.1'
 }

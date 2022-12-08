@@ -30,6 +30,14 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+
+        maven {
+            url "https://repo.horanet.com/repository/maven-public/"
+            credentials {
+                username "${nexusUsername}"
+                password "${nexusPassword}"
+            }
+        }
     }
 }
 

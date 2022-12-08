@@ -3,8 +3,11 @@ package horanet.hframework.hauth;
 import static horanet.hframework.hauth.BuildConfig.DEBUG;
 
 import com.horanet.hi2c.I2CTools;
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -12,6 +15,8 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -109,6 +114,7 @@ public class HAuth {
         return login;
     }
 
+    @SuppressLint("HardwareIds")
     private String getSerial(Context context, SharedPreferences sharedPreferences) {
         serial = sharedPreferences.getString(HAuth.SHARED_PREFS_SERIAL, "");
         if (serial.isEmpty()) {
@@ -126,14 +132,34 @@ public class HAuth {
                     }
                     i--;
                 }
-            } else if (!Build.SERIAL.equals(Build.UNKNOWN))
-                serial = Build.SERIAL;
-            else
-                serial = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-            Log.i(TAG, "getSerial MANUFACTURER " + Build.MANUFACTURER + " MODEL " + Build.MODEL + " Serial Number " + serial);
+            } else {
+                /* If the calling app does not meet one of these requirements then this method will behave as follows:
+                   - If the calling app's target SDK is API level 28 or lower and the app has the
+                     READ_PHONE_STATE permission then UNKNOWN is returned.
+                   - If the calling app's target SDK is API level 28 or lower and the app does not
+                     have the READ_PHONE_STATE permission, or if the calling app is targeting
+                     API level 29 or higher, then a SecurityException is thrown.
+                 */
+                int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                    try {
+                        serial = Build.getSerial();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    serial = Build.SERIAL;
+                }
+            }
+
+            //If serial not get try to get it in another way
+            if (serial == null || serial.isEmpty() || serial.equals(Build.UNKNOWN))
+                serial = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
             if (serial == null)
                 serial = "";
+
+            Log.i(TAG, "getSerial MANUFACTURER " + Build.MANUFACTURER + " MODEL " + Build.MODEL + " Serial Number " + serial);
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(HAuth.SHARED_PREFS_SERIAL, serial);
