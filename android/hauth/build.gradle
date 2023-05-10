@@ -9,7 +9,7 @@ android {
     defaultConfig {
         minSdkVersion 23
         versionCode 133
-        versionName "0.1.7"
+        versionName "0.1.14"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -44,12 +44,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(":HI2C")
     implementation 'androidx.appcompat:appcompat:1.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

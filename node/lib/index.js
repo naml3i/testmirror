@@ -229,7 +229,6 @@ function allowed(role, url, rule) {
 		return rule.includes(role) ? true : false;
 	else if (new RegExp(rule).test(role))
 		return true;
-	console.error(`invalid access rule "${rule}" in hauth config`);
 	return false;
 }
 

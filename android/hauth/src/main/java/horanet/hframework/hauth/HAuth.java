@@ -2,6 +2,7 @@ package horanet.hframework.hauth;
 
 import static horanet.hframework.hauth.BuildConfig.DEBUG;
 
+import com.horanet.hi2c.I2CTools;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -19,7 +20,8 @@ import java.nio.charset.StandardCharsets;
 public class HAuth {
     public static final String TAG = HAuth.class.getSimpleName();
 
-    static final String MANUFACTURER_HORANET = "Freescale";
+    static final String MANUFACTURER_FREESCALE = "Freescale";
+    static final String MANUFACTURER_HORANET = "Horanet";
     static final String HORANET_PM098 = "PM098-MX6DQ";
 
     private static final String HTTP_HEAD_X_NEXT_PASSWORD = "X-Next-Password";
@@ -111,9 +113,20 @@ public class HAuth {
         serial = sharedPreferences.getString(HAuth.SHARED_PREFS_SERIAL, "");
         if (serial.isEmpty()) {
             // There is no serial in shared preferences, so get it from the system
-            if (Build.MANUFACTURER.equals(MANUFACTURER_HORANET) && Build.MODEL.equals(HORANET_PM098))
-                serial = SystemUtils.getBuiltinSerialNumber();
-            else if (!Build.SERIAL.equals(Build.UNKNOWN))
+            if ((Build.MANUFACTURER.equals(MANUFACTURER_FREESCALE) || Build.MANUFACTURER.equals(MANUFACTURER_HORANET)) && Build.MODEL.equals(HORANET_PM098)) {
+                int i = 5;
+
+                // We retry up to 5 times (even though it should never fail, better safe than sorry)
+                while (i != 0) {
+                    try {
+                        serial = I2CTools.Companion.getStandardProdId();
+                        break;
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
+                    i--;
+                }
+            } else if (!Build.SERIAL.equals(Build.UNKNOWN))
                 serial = Build.SERIAL;
             else
                 serial = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);

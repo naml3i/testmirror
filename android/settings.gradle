@@ -1,1 +1,2 @@
 include ':hauth'
+include ':HI2C'
