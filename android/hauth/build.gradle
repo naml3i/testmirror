@@ -3,13 +3,12 @@ apply plugin: 'maven-publish'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion "29.0.3"
+    compileSdk 32
 
     defaultConfig {
-        minSdkVersion 23
+        minSdk 23
         versionCode 135
-        versionName "0.1.15_BETA"
+        versionName "0.1.15"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -17,37 +16,62 @@ android {
         buildConfigField "String", "shared_preferences", "\"hauth\""
     }
 
-    //aar publishing to repo.horanet.com
-    publishing {
-        publications {
-            core(MavenPublication) {
-                groupId 'horanet.hframework'
-                artifactId 'hauth'
-                version android.defaultConfig.versionName
-                artifact("$buildDir/outputs/aar/hauth-release.aar")
-            }
-        }
-        repositories {
-            maven {
-                credentials {
-                    username "${nexusUsername}" //System.getenv("MAVEN_REPO_USER")
-                    password "${nexusPassword}" //System.getenv("MAVEN_REPO_PASS")
-                }
-                def releasesRepoUrl = "${nexusUrl}/repository/maven-releases/"
-                url = releasesRepoUrl
-            }
-        }
-    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    //aar publishing to repo.horanet.com
+    publishing {
+        singleVariant("release") {
+            // if you don't want sources/javadoc, remove these lines
+//            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+
 }
+
+publishing {
+    repositories {
+        maven {
+            credentials {
+                username "${nexusUsername}" //System.getenv("MAVEN_REPO_USER")
+                password "${nexusPassword}" //System.getenv("MAVEN_REPO_PASS")
+            }
+            def releasesRepoUrl = "${nexusUrl}/repository/maven-releases/"
+            url = releasesRepoUrl
+        }
+    }
+}
+
+//aar publishing to repo.horanet.com
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId 'horanet.hframework'
+                artifactId 'hauth'
+                version android.defaultConfig.versionName
+            }
+        }
+    }
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     testImplementation 'junit:junit:4.13.2'
