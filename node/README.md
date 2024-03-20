@@ -24,7 +24,7 @@ Authorization: Basic login:password
 
 ### Role-based Access Control
 
-Hauth manages access rules based on URLs path (without query string) and on roles. Each user can be assigned one role. Access rules look like :
+Hauth manages access rules based on URLs path (without query string) and on roles. Each user can be assigned one role. Access rules look like:
 
 ```cfg
 '/node_modules': 'skip',    // disable access control => no authentication required
@@ -34,7 +34,9 @@ Hauth manages access rules based on URLs path (without query string) and on role
 '/':             'deny',    // forbid everything which is not allowed
 ```
 
-By default, access is denied if no access rule matches.
+See below [accessRules](#accessrules) to get more informations about access rules format.
+
+By default, if no access rule matches, access is allowed to all authenticated users.
 
 ### Accessing User Data
 
@@ -144,7 +146,7 @@ const db = new pg.Pool({
 });
 ```
 
-and `params` is an object containing the configuration parameters (all optional) :
+and `params` is an object containing the configuration parameters (all optional):
 
 ### `cookiename`
 
@@ -181,9 +183,9 @@ The keywords are:
 - `deny`: access forbidden
 - `skip`: allowed access without authentication
 
-These rules are tested in the order they are listed, until a rule matches.
+These rules are tested in the order they are listed, until a rule matches the request path.
 
-If no access rule matches the URL, the default rule is `allow`. So, in order to forbid anything that is not explicitly allowed, you should end the access rules with the rule `'/': 'deny'`
+If no access rule matches the request path, the default rule is `allow`. So, in order to forbid anything that is not explicitly allowed, you should end the access rules with the rule `'/': 'deny'`
 
 ### `on401`
 
