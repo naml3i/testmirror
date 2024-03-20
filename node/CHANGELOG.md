@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.15...v0.1.13) (2024-03-20)
+
+
+### Bug Fixes
+
+* Bug on autocreate + on access rules ([7a5fc92](https://gitlab.horanet.com/hframework/hauth/commit/7a5fc924b2bb0c1e5c7835c7160e46f1d8473766))
+
 ### [0.1.12](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.10...v0.1.12) (2022-10-25)
 
 
