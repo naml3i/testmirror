@@ -206,7 +206,7 @@ async function control(req, res, next) {
  */
 function getRule(url) {
 	for (const [pattern, rule] of Object.entries(cfg().accessRules)) {
-		if (pattern.startsWith('/') && url.startsWith(pattern) || new RegExp(pattern).test(url)) {
+		if (pattern.startsWith('/') ? url.startsWith(pattern) : new RegExp(pattern).test(url)) {
 			return rule;
 		}
 	}
@@ -273,7 +273,8 @@ async function checkUser(req, res) {
 				// client did not send next password, and normal password is not defined:
 				// client may not have received next password sent during autocreate process,
 				// so the next password must be re-sent
-				if (sameUser(user, await cfg().autocreate(login, pwd, db, req.headers))) {
+				const fakeUser = await cfg().autocreate(login, pwd, db, req.headers);
+				if (fakeUser && fakeUser.login === user.login) {
 					req.user = user;
 					const next_password = pwgen(); // password generation
 					res.set('X-Next-Password', next_password);
@@ -297,17 +298,6 @@ async function checkUser(req, res) {
 		}
 	}
 	return false;
-}
-
-/**
- * Verify if user1 and user2 are the same
- * @returns true or false
- */
-function sameUser(user1, user2) {
-	for (let prop in user1)
-		if (user1.prop !== user2.prop)
-			return false;
-	return user1.length === user2.length;
 }
 
 /**

@@ -201,12 +201,12 @@ A function to provide custom response when the user logs out
 
 ### `autocreate`
 
-A function to make possible for an unregistered client to create its own accounts. If this function is defined, if an unknown client provides username and password in an 'Authorization: Basic' header, it makes it possible to check the credentials and to run some more code; if this function returns a non-null object describing an account, Hauth will create the account in hauth_user and deliver a new password (in a 'X-Next-Password' Header).
+A function to make possible for an unregistered client to create its own accounts. If this function is defined, if an unknown client provides username and password, it makes it possible to check the credentials and to run some more code; if this function returns a non-null object describing an account, Hauth will create the account in hauth_user and deliver a new password (in a 'X-Next-Password' Header).
 
 For example,
 
 ```js
-  autocreate: async function(login, pwd, db) {
+  autocreate: async function(login, pwd, db, request_headers) {
     if (pwd === 'secret') { // this magic password allows to create any admin account
       await db.query('INSERT INTO ...'); // you can add some extra processing
       return {login: login, name: login, role: 'admin'}
