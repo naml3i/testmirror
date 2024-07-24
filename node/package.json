@@ -1,6 +1,6 @@
 {
   "name": "@horanet/hauth",
-  "version": "0.1.13",
+  "version": "0.1.17",
   "description": "Authentication module for web apps with PG database",
   "main": "lib/index.js",
   "scripts": {
@@ -30,10 +30,12 @@
   },
   "homepage": "https://gitlab.horanet.com/hframework/hauth/-/blob/master/README.md",
   "devDependencies": {
+    "body-parser": "^1.19.0",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
-    "mocha": "^8.4.0",
+    "express": "^4.17.1",
     "nodemon": "^2.0.9",
     "nyc": "^15.1.0",
     "standard-version": "^9.3.0"
@@ -43,7 +45,7 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.6.0"
   }
 }
