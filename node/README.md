@@ -2,6 +2,8 @@
 
 This `hauth` package provides secured client password-based authentication so that express-based web applications can reuse without rewriting most frequently used authentication flows.
 
+This version is a transitional package to switch password hashing function from bcrypt (used in previous versions) to scrypt (used from v1.0).
+
 ## Introduction
 
 This module is aimed at authenticating web users as well as devices.
@@ -56,10 +58,9 @@ Besides, it is possible to manage custom 401 or 403 response, for example in ord
 
 ### Passwords Stored Hashed
 
-Salted passwords are hashed using [bcrypt](https://www.npmjs.com/package/bcrypt),
-an implementation of OpenBSD Blowfish password hashing algorithm.
+Salted passwords are hashed with [scrypt](https://en.wikipedia.org/wiki/Scrypt) by [scrypt-pwd](https://www.npmjs.com/package/scrypt-pwd).
 
-The computation cost of `bcrypt` algorithm is parametized, which means it can be increased to adapt to future hashing power improvements in case of brute-force attacks. This most important property of `bcrypt` makes it the recommeded hashing algorithm to hash user's password.
+Besides, this transitional version can check password against bcrypt hashes, as used in hauth previous versions, and in case of success, it convert bcrypt hash into scrypt hash.
 
 ### Force Password Change at Next Login
 
