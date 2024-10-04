@@ -43,7 +43,7 @@ function login() {
             document.location.reload(true);
         },
         error: function(xhr, status, error) {
-            $('#message').text('Error: ' + xhr.responseText).show()
+            $('#message').text('Invalid login or password').show()
         }
     });
 }

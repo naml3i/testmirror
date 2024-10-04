@@ -1,21 +1,11 @@
 {
   "name": "@horanet/hauth",
-  "version": "0.1.17",
-  "description": "Authentication module for web apps with PG database",
+  "version": "1.0.0",
+  "description": "Web authentication and authorization module for humans and devices with PG database",
   "main": "lib/index.js",
   "scripts": {
-    "example": "nodemon ./example/index.js",
+    "example": "node ./example/index.js",
     "release": "standard-version"
-  },
-  "nyc": {
-    "reporter": [
-      "lcov",
-      "text"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://gitlab.horanet.com/hframework/hauth.git"
   },
   "keywords": [
     "authentication",
@@ -23,29 +13,16 @@
     "accounting",
     "AAA"
   ],
-  "author": "Horanet HSO",
+  "author": "Horanet",
   "license": "MIT",
-  "bugs": {
-    "url": "https://gitlab.horanet.com/hframework/hauth/-/issues"
-  },
-  "homepage": "https://gitlab.horanet.com/hframework/hauth/-/blob/master/README.md",
   "devDependencies": {
+    "express": "^4.21.0",
     "body-parser": "^1.19.0",
-    "chai": "^4.3.4",
-    "chai-http": "^4.3.0",
-    "cookie-parser": "^1.4.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "nodemon": "^2.0.9",
-    "nyc": "^15.1.0",
-    "standard-version": "^9.3.0"
+    "cookie-parser": "^1.4.5"
   },
   "dependencies": {
-    "bcrypt": "^5.0.1",
-    "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.5",
-    "express": "^4.17.1",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.6.0"
+    "pg": "^8.6.0",
+    "scrypt-pwd": "^1.0.0"
   }
 }
