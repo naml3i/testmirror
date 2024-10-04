@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const scrypt = require('scrypt-pwd');
 const jwt = require('jsonwebtoken');
 
 var defCfg = { // config parameters, populated with default values
@@ -120,7 +121,7 @@ async function parse(user) {
 	delete user.role;
 
 	if (user.password) {
-		user.password = await bcrypt.hash(user.password, 10);
+		user.password = await scrypt.hash(user.password);
 	}
 
 	var cols = Object.keys(user);
@@ -259,14 +260,28 @@ async function checkUser(req, res) {
 		if (user) {
 			if (pwd === nextPwd) { // client sent next password
 				req.user = user;
-				await updatePwd(login, pwd);
+				updatePwd(login, pwd, true);
 				return true;
 			}
-			if (dbPwd && await bcrypt.compare(pwd, dbPwd)) { // client sent normal password
+			if (dbPwd && await scrypt.verify(pwd, dbPwd)) { // client sent normal password
 				req.user = user;
 				if (nextPwd) {
 					res.set('X-Next-Password', nextPwd);
 				}
+				try {
+					if (scrypt.needsRehash(dbPwd)) {
+						updatePwd(login, pwd);
+					}
+				} catch (err) {}
+				return true;
+			}
+			if (dbPwd && await bcrypt.compare(pwd, dbPwd)) { // client sent normal password,
+				// but it is stored bcrypt-hashed, so it must be re-hashed with scrypt
+				req.user = user;
+				if (nextPwd) {
+					res.set('X-Next-Password', nextPwd);
+				}
+				updatePwd(login, pwd);
 				return true;
 			}
 			if (!dbPwd && nextPwd && cfg().autocreate) {
@@ -333,9 +348,12 @@ async function getUser(login) {
 	}
 }
 
-async function updatePwd(login, pwd) {
-	const hash = await bcrypt.hash(pwd, 10);
-	await db.query(`UPDATE hauth_user SET password=$2, next_password=NULL WHERE login=$1`, [login, hash]);
+function updatePwd(login, pwd, resetNextPwd) {
+	scrypt.hash(pwd).then((hash) => {
+		db.query('UPDATE hauth_user SET password=$2' + (resetNextPwd ? ', next_password=NULL' : '') + ' WHERE login=$1', [login, hash]).then(() => {
+            console.log(`${login}'s password hash updated`);
+        });
+	});
 }
 
 /**

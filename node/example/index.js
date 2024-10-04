@@ -81,4 +81,5 @@ app.use('/node_modules', express.static(path.join(__dirname, '../node_modules'))
 
 app.listen(port, function() {
   console.log(`Hauth example server running at http://localhost:${port}`)
+  console.log(`Try for example http://localhost:${port}/whoami and log in as admin/admin`)
 })
