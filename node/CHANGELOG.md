@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.0.0](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.17...v1.0.0) (2024-10-04)
+### [1.0.1](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.17...v1.0.1) (2024-10-04)
 
 ### Features
 * Use scrypt instead of bcrypt for password hashing, in order to improve security and lighten dependencies
