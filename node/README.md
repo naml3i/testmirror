@@ -1,6 +1,6 @@
-# hauth: authentication, authorization and accounting module for web apps with PG database
+# hauth: Web authentication and authorization module for humans and devices
 
-This `hauth` package provides secured client password-based authentication so that express-based web applications can reuse without rewriting most frequently used authentication flows.
+This `hauth` package provides secured client password-based authentication and URL-based access control features, that express-based web applications can reuse without rewriting most frequently used authentication flows.
 
 ## Introduction
 
@@ -8,7 +8,7 @@ This module is aimed at authenticating web users as well as devices.
 The use of this module assumes that:
 
 - the app is powered by [express](https://www.npmjs.com/package/express)
-- the app can connect to a [Postgres](https://www.postgresql.org/about/) database, and has right to create tables on that database
+- the app can connect to a [Postgres](https://www.postgresql.org/about/) database, and has right to create tables on that database (if not, the tables can be created by hand)
 
 ## Features
 
@@ -56,10 +56,7 @@ Besides, it is possible to manage custom 401 or 403 response, for example in ord
 
 ### Passwords Stored Hashed
 
-Salted passwords are hashed using [bcrypt](https://www.npmjs.com/package/bcrypt),
-an implementation of OpenBSD Blowfish password hashing algorithm.
-
-The computation cost of `bcrypt` algorithm is parametized, which means it can be increased to adapt to future hashing power improvements in case of brute-force attacks. This most important property of `bcrypt` makes it the recommeded hashing algorithm to hash user's password.
+Salted passwords are hashed with [scrypt](https://en.wikipedia.org/wiki/Scrypt) by [scrypt-pwd](https://www.npmjs.com/package/scrypt-pwd).
 
 ### Force Password Change at Next Login
 
