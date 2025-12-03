@@ -281,6 +281,19 @@ Modify existing user in table `hauth_user`:
 - Information of user with `login` will be updated according to the input fields
 - Return `pass` value: `true` in case the `UPDATE` query was succesfull, `false` otherwise.
 
+### addRoles
+
+### checkUser
+
+### updatePwd
+
+### checkToken
+
+### addCookie
+
+### generateCookie
+
+
 ## Example
 
 To run the example (the script located in `./example/index.js`):

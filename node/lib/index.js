@@ -29,6 +29,7 @@ module.exports = {
 	modUser:       checkInit(modUser),
 	addRoles:      checkInit(addRoles),
 	checkUser:     checkInit(checkUser),
+	updatePwd:     checkInit(updatePwd),
 	checkToken:    checkInit(checkToken),
 	addCookie:     checkInit(addCookie),
 	generateCookie:checkInit(generateCookie)
