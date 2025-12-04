@@ -47,15 +47,28 @@ const config = {
 
 var hauth;
 try {
-  hauth = require('@horanet/hauth');
-}catch {
   hauth = require('../lib/index');
+} catch {
+  hauth = require('@horanet/hauth');
 }
 
+/* check database connection */
+db.connect()
+  .then(() => {
 /* init Hauth with config params and database handle */
-hauth.init(config, db).then(() => {
-  hauth.addUser({login: 'user', password: 'password'}); // no role is defined
-});
+    hauth.init(config, db).then(() => {
+      hauth.addUser({login: 'user', password: 'password'}); // no role is defined
+      app.listen(port, function() {
+        console.log(`Hauth example server running at http://localhost:${port}`)
+        console.log(`Try for example http://localhost:${port}/whoami and log in as admin/admin`)
+      })
+    });
+  })
+  .catch(() => {
+    console.log('Unable to connect to test database with user testuser.')
+    console.log('Run init-db.sql script to create it')
+    console.log('For example run in a shell `sudo -u postgres psql -f init-db.sql`')
+  });
 
 /* functions related to cookie, that should not be submitted to access control
  * => either run them before the main directive
@@ -78,8 +91,3 @@ app.use('/hauth/deluser/:login', async (req, res) => { res.send(await hauth.delU
 app.use('/hello', (req, res) => {res.send(`Hello dear ${req.user.login}`)});
 app.use('/whoami', (req, res) => {res.send(req.user)});
 app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
-
-app.listen(port, function() {
-  console.log(`Hauth example server running at http://localhost:${port}`)
-  console.log(`Try for example http://localhost:${port}/whoami and log in as admin/admin`)
-})

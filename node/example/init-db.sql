@@ -1,0 +1,4 @@
+CREATE DATABASE test;
+CREATE USER testuser WITH PASSWORD 'testpass';
+ALTER DATABASE test OWNER TO testuser;
+
