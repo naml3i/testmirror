@@ -29,6 +29,7 @@ module.exports = {
 	modUser:       checkInit(modUser),
 	addRoles:      checkInit(addRoles),
 	checkUser:     checkInit(checkUser),
+	checkPwd:      checkInit(checkPwd),
 	updatePwd:     checkInit(updatePwd),
 	checkToken:    checkInit(checkToken),
 	addCookie:     checkInit(addCookie),
@@ -255,55 +256,80 @@ function checkToken(req) {
  */
 async function checkUser(req, res) {
 	const [login, pwd] = getUserAndPwdFromReq(req);
-	if (login && pwd !== undefined) { // pwd may be ''
-		var [user, dbPwd, nextPwd] = await getUser(login);
-		if (user) {
-			if (pwd === nextPwd) { // client sent next password
+
+	if (!login || pwd == null) { // pwd may be ''
+		return false;
+	}
+
+	let [success, user, dbPwd, nextPwd] = await checkPwd(login, pwd);
+
+	if (success) {
+		if (nextPwd) {
+			res.set('X-Next-Password', nextPwd);
+		}
+		req.user = user;
+		return true;
+	}
+	if (!user) {
+		if (cfg().autocreate) {
+			user = await cfg().autocreate(login, pwd, db, req.headers);
+			if (user) {
+				const next_password = pwgen(); // password generation
+
 				req.user = user;
-				updatePwd(login, pwd, true);
+				res.set('X-Next-Password', next_password);
+				await addUser({ ...user, next_password });
+				console.info(`Created new user ${login}`);
 				return true;
 			}
-			if (dbPwd && await scrypt.verify(pwd, dbPwd)) { // client sent normal password
-				req.user = user;
-				if (nextPwd) {
-					res.set('X-Next-Password', nextPwd);
-				}
-				try {
-					if (scrypt.needsRehash(dbPwd)) {
-						updatePwd(login, pwd);
-					}
-				} catch (err) {}
-				return true;
-			}
-			if (!dbPwd && nextPwd && cfg().autocreate) {
-				// client did not send next password, and normal password is not defined:
-				// client may not have received next password sent during autocreate process,
-				// so the next password must be re-sent
-				const fakeUser = await cfg().autocreate(login, pwd, db, req.headers);
-				if (fakeUser && fakeUser.login === user.login) {
-					req.user = user;
-					const next_password = pwgen(); // password generation
-					res.set('X-Next-Password', next_password);
-					await modUser(login, { next_password });
-					return true;
-				}
-			}
-			console.warn(`Attempt to login as ${login} with bad password`);
-		} else { // unknown login
-			if (cfg().autocreate) {
-				user = await cfg().autocreate(login, pwd, db, req.headers);
-				if (user) {
-					req.user = user;
-					const next_password = pwgen(); // password generation
-					res.set('X-Next-Password', next_password);
-					await addUser({ ...user, next_password });
-					return true;
-				}
-			}
-			console.warn(`Attempt to login as ${login}, but this login is unknown`)
+		}
+		console.warn(`Attempt to login as ${login}, but this login is unknown`)
+		return false;
+	}
+	if (!dbPwd && nextPwd && cfg().autocreate) {
+		// client did not send next password, and normal password is not defined:
+		// client may not have received next password sent during autocreate process,
+		// so the next password must be re-sent
+		const fakeUser = await cfg().autocreate(login, pwd, db, req.headers);
+		if (fakeUser && fakeUser.login === user.login) {
+			req.user = user;
+			const next_password = pwgen(); // password generation
+			res.set('X-Next-Password', next_password);
+			await modUser(login, { next_password });
+			console.warn(`Renew and resend ${login}'s next password`)
+			return true;
 		}
 	}
+
+	console.warn(`Attempt to login as ${login} with bad password`);
 	return false;
+}
+
+async function checkPwd(login, pwd, checkNextPwd = true)
+{
+	var [user, dbPwd, nextPwd] = await getUser(login);
+
+	if (!user) {
+		return [false, user, dbPwd, nextPwd];
+	}
+	if (checkNextPwd && pwd != null && pwd === nextPwd) { // client sent next password
+		updatePwd(login, pwd, true);
+		return [true, user, dbPwd, nextPwd];
+	}
+	if (dbPwd && await scrypt.verify(pwd, dbPwd)) { // client sent normal password
+		try {
+			if (scrypt.needsRehash(dbPwd)) {
+				updatePwd(login, pwd);
+			}
+		} catch (err) {}
+		return [true, user, dbPwd, nextPwd];
+	}
+	if (dbPwd && await bcrypt.compare(pwd, dbPwd)) { // client sent normal password,
+		// but it is stored bcrypt-hashed, so it must be re-hashed with scrypt
+		updatePwd(login, pwd);
+		return [true, user, dbPwd, nextPwd];
+	}
+	return [false, user, dbPwd, nextPwd];
 }
 
 /**
@@ -342,8 +368,8 @@ async function getUser(login) {
 function updatePwd(login, pwd, resetNextPwd) {
 	scrypt.hash(pwd).then((hash) => {
 		db.query('UPDATE hauth_user SET password=$2' + (resetNextPwd ? ', next_password=NULL' : '') + ' WHERE login=$1', [login, hash]).then(() => {
-            console.log(`${login}'s password hash updated`);
-        });
+			console.log(`${login}'s password hash updated`);
+		});
 	});
 }
 

@@ -117,7 +117,7 @@ one can create the database using `psql`:
 sudo -u postgres psql
 postgres=# CREATE DATABASE test;
 postgres=# CREATE USER testuser WITH ENCRYPTED PASSWORD 'testpass';
-postgres=# GRANT ALL PRIVILEGES ON DATABASE mydb TO testuser;
+postgres=# ALTER DATABASE test OWNER TO testuser;
 ```
 
 With the correct params to connect to the created PG database, the module will automatically creates two tables (if they do not exist): `hauth_user` and `hauth_role`.
@@ -284,6 +284,8 @@ Modify existing user in table `hauth_user`:
 ### addRoles
 
 ### checkUser
+
+### checkPwd
 
 ### updatePwd
 
