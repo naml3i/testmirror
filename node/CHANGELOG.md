@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.2](https://gitlab.horanet.com/hframework/hauth/compare/v0.9.0...v0.9.2) (2025-12-04)
+
+### Features
+* export functions checkPwd and updatePwd
+
+### Bug Fixes
+* Fix a security bug occuring when autocreate is enabled
+
 ### [0.9.0](https://gitlab.horanet.com/hframework/hauth/compare/v0.1.17...v0.9.0) (2024-10-04)
 
 ### Features

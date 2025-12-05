@@ -43,6 +43,12 @@ const config = {
   },
   on403: (req, res) => { res.send('Forbidden') },
   onLogout: (req, res) => { res.send('You are logged out') },
+  autocreate: async function(login, pwd, db, request_headers) {
+    if (pwd === 'secret') { // this magic password allows to create any admin account
+      //await db.query('INSERT INTO ...'); // you can add some extra processing
+      return {login: login, name: login, role: 'admin'}
+    }
+  }
 };
 
 var hauth;
